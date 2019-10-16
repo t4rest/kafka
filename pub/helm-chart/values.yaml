@@ -1,0 +1,40 @@
+# Default values for go-k8s.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+replicaCount: 1
+
+image:
+  repository: t4rest/go-pub
+  tag: latest
+  pullPolicy: Always
+
+service:
+  name: go-pub
+  type: NodePort
+  externalPort: 3000
+  internalPort: 3000
+
+resources:
+  limits:
+    cpu: 100m
+    memory: 128Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+autoscaling:
+  enabled: true
+  minReplicas: 3
+  maxReplicas: 6
+  targetCPUUtilizationPercentage: 80
+  targetMemoryUtilizationPercentage: 80
+
+ingress:
+  enabled: false
+  # Used to create an Ingress record.
+  hosts:
+    - localhost
+  path: "/go-pub/"
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+  tls:
